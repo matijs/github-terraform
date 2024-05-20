@@ -102,3 +102,4 @@ resource "github_branch_default" "main" {
   repository = each.value.repository
   branch     = each.value.branch
 }
+

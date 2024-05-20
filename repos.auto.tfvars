@@ -5,6 +5,9 @@ repos = [
   },
   {
     name = "lab.probablerobot.net"
+  },
+  {
+    name = "foobarbaz"
   }
 ]
 
