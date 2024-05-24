@@ -31,7 +31,6 @@ variable "branch_protections" {
     strict                          = optional(bool, true)
     contexts                        = optional(list(string), [])
     required_approving_review_count = optional(number, 0)
-    require_last_push_approval      = optional(bool, false)
   }))
 }
 
@@ -85,7 +84,6 @@ resource "github_branch_protection" "this" {
   }
   required_pull_request_reviews {
     required_approving_review_count = each.value.required_approving_review_count
-    require_last_push_approval      = each.value.require_last_push_approval
   }
 }
 
