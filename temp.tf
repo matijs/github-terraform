@@ -10,7 +10,7 @@ resource "github_repository" "temp" {
   }
 }
 
-resource "github_repository_ruleset" "temp-main" {
+resource "github_repository_ruleset" "temp" {
   name        = "main"
   repository  = github_repository.temp.name
   target      = "branch"
