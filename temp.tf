@@ -18,13 +18,15 @@ resource "github_repository_ruleset" "temp" {
 
   conditions {
     ref_name {
-      include = ["main"]
+      include = ["refs/heads/main"]
       exclude = []
     }
   }
 
   rules {
     required_linear_history = true
+    deletion                = true
+    non_fast_forward        = true
 
     pull_request {
       dismiss_stale_reviews_on_push     = true
@@ -35,6 +37,9 @@ resource "github_repository_ruleset" "temp" {
     required_status_checks {
       required_check {
         context = "test"
+      }
+      required_check {
+        context = "lint"
       }
       strict_required_status_checks_policy = true
     }
