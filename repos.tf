@@ -38,6 +38,17 @@ variable "branch_protections" {
   }))
 }
 
+variable "branch_rulesets" {
+  type = list(object({
+    name                            = optional(string, "main-branch-protection")
+    repository                      = string
+    enforcement                     = optional(string, "disabled")
+    required_linear_history         = optional(bool, true)
+    required_approving_review_count = optional(number, 0)
+    require_last_push_approval      = optional(bool, false)
+  }))
+}
+
 resource "github_repository" "r" {
   for_each = { for repo in var.repos : repo.name => repo }
 
@@ -73,6 +84,30 @@ resource "github_repository" "r" {
 
   lifecycle {
     prevent_destroy = true
+  }
+}
+
+resource "github_repository_ruleset" "branch_protection" {
+  for_each = { for r in var.branch_rulesets : r.repository => r }
+
+  name        = each.value.name
+  repository  = each.value.repository
+  enforcement = each.value.enforcement
+  target      = "branch"
+
+  conditions {
+    ref_name {
+      include = ["refs/heads/main"]
+      exclude = []
+    }
+  }
+
+  rules {
+    pull_request {
+      required_approving_review_count = each.value.required_approving_review_count
+      require_last_push_approval      = each.value.require_last_push_approval
+    }
+    required_linear_history = each.value.required_linear_history
   }
 }
 
