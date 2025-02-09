@@ -22,12 +22,16 @@ resource "github_repository" "repository" {
   vulnerability_alerts        = each.value.vulnerability_alerts
   web_commit_signoff_required = each.value.web_commit_signoff_required
 
-  security_and_analysis {
-    secret_scanning {
-      status = each.value.secret_scanning
-    }
-    secret_scanning_push_protection {
-      status = each.value.secret_scanning_push_protection
+  dynamic "security_and_analysis" {
+    for_each = each.value.visibility == "public" ? [1] : []
+
+    content {
+      secret_scanning {
+        status = each.value.security_and_analysis.secret_scanning.status
+      }
+      secret_scanning_push_protection {
+        status = each.value.security_and_analysis.secret_scanning_push_protection.status
+      }
     }
   }
 

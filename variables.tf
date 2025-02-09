@@ -20,8 +20,16 @@ variable "repositories" {
     has_projects                    = optional(bool, false)
     has_wiki                        = optional(bool, false)
     is_template                     = optional(bool, false)
-    secret_scanning                 = optional(string, "enabled")
-    secret_scanning_push_protection = optional(string, "enabled")
+
+    security_and_analysis = optional(object({
+      secret_scanning = object({
+        status = optional(string, "enabled")
+      })
+      secret_scanning_push_protection = object({
+        status = optional(string, "enabled")
+      })
+    }))
+
     topics                          = optional(list(string), [])
     visibility                      = optional(string, "public")
     vulnerability_alerts            = optional(bool, true)
