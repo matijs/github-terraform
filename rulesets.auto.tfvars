@@ -36,5 +36,12 @@ rulesets = {
         ]
       }
     }
+  },
+  "foo" = {
+    rules = {
+      pull_request = {
+        require_code_owner_review = true
+      }
+    }
   }
 }

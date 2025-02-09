@@ -12,4 +12,5 @@ repositories = {
   "til" = {
     description = "Today I Learned"
   }
+  "foo" = {}
 }
