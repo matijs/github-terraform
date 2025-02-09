@@ -49,3 +49,23 @@ resource "github_branch_default" "branch_default" {
   repository = each.value.repository
   branch     = each.value.branch
 }
+
+resource "github_organization_ruleset" "test" {
+  enforcement = "disabled"
+  name        = "some-name"
+  target      = "branch"
+  conditions {
+    ref_name {
+      include = ["~DEFAULT_BRANCH"]
+      exclude = []
+    }
+    repository_name {
+      include = ["til"]
+      exclude = []
+    }
+  }
+  rules {
+    deletion                = false
+    required_linear_history = true
+  }
+}
